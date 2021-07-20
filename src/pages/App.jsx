@@ -1,13 +1,17 @@
 import React from "react";
-import {} from 'react-router-dom'
-
+import "../styles/pages/app.css"
 export default function App(){
     return(
         <main>
-            <header style={{backgroundColor:"blue", height: 100, }}>
-                <div style={{marginLeft: 20, padding: 20,
-                    width:60, height:60, borderRadius:60, backgroundColor:'gray'}}></div>
+            
+            <header style={{height: 80, display:'flex', justifyContent:'space-between', backgroundColor:'#C4C4C4'}}>
+            <div className="user"></div>
+                <p style={{color:'red',fontSize: 20, marginRight: 30, marginTop: 20}}>sair &rarr;</p>
             </header>
+            
+            
+
+            <div className="body"></div>
         </main>
     )
 }
