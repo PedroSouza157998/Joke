@@ -1,0 +1,22 @@
+main{
+    position: relative;
+}
+.card-main{
+    display: flex;
+    flex-direction: column;
+    background-color: #DFDFDF;
+    margin: auto;
+    width: 400px;
+    border-radius: 10px;
+    margin: auto;
+    margin-top: 15%;
+}
+
+.card-main h1{
+    font-size: 70px;
+    font-family: sans-serif;
+    margin: auto;
+}
+.card-main div{
+    margin: auto;
+}
