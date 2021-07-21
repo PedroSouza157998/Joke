@@ -1,0 +1,24 @@
+main{
+    position: relative;
+}
+.card-main{
+    display: flex;
+    flex-direction: column;
+    background-color: #DFDFDF;
+    margin: auto;
+    width: 90%;
+    border-radius: 10px;
+    margin: auto;
+    margin-top: 15%;
+    max-width: 500px;
+
+}
+
+.card-main h1{
+    font-size: 70px;
+    font-family: sans-serif;
+    margin: auto;
+}
+.card-main div{
+    margin: auto;
+}

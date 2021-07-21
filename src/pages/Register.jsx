@@ -1,9 +1,7 @@
 import React from "react";
-import { } from 'react-router-dom';
-import "../styles/pages/Register.css"
+import "../styles/pages/Register.css";
 import ChakraInput from "../components/input";
 import ChakraButton from "../components/button";
-import {Input} from "@chakra-ui/react"
 
 export default function Register() {
     return (
