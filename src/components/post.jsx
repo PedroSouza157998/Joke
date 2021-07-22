@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function Post() {
+export default function Post(props) {
     const body = {
         backgroundColor: '#C4C4C4',
         borderRadius: 10,
@@ -10,9 +10,9 @@ export default function Post() {
         marginTop: 20
     }
     return (
-        <div style={body}>
-            <strong>user name</strong>
-            <p style={{marginTop: 7}}> Conteudo fica aqui, muitas piadas KKKKKKKKKKKKKKKKKKKKK</p>
+        <div key={props.key} style={body}>
+            <strong>{props.user}</strong>
+            <p style={{marginTop: 7}}>{props.joke}</p>
         </div>
     );
 }

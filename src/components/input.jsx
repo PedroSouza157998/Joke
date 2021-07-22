@@ -4,7 +4,7 @@ export default function ChakraInput(props) {
     return (
         <div style={{margin: '5%'}}>
             <p style={{ border: 0, margin: 3 }} ><strong>{props.placeholder}</strong></p>
-            <Input
+            <Input onChange={props.onChange}
                 type={props.type}
                 style={{
                     width: props.width, height: props.height, borderRadius: 20,
