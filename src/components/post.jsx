@@ -11,8 +11,9 @@ export default function Post(props) {
     }
     return (
         <div key={props.key} style={body}>
-            <strong>{props.user}</strong>
-            <p style={{marginTop: 7}}>{props.joke}</p>
+            <div style={{height:5}}></div>
+            <strong style={{padding: 10}}>{props.user}</strong>
+            <p style={{marginTop: "1%", marginLeft: 20}}>{props.joke}</p>
         </div>
     );
 }
