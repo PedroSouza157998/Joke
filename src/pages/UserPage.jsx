@@ -1,13 +1,15 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
+import { UIStore } from "../UIstate/UIstate";
 
 import api from "../services/api";
-import Post from "../components/post"
+import Post from "../components/post";
 
 import "../styles/pages/App.css";
 
 export default function User() {
-    const id = 2;
+    const id = UIStore.useState(s => s.userId)
+    const history = useHistory();
 
     const [feed, setFeed] = React.useState([]);
 
@@ -46,11 +48,20 @@ export default function User() {
 
 
             <div>
-            <div onClick={() => { window.location.assign("http://localhost:3000/cadastro/piada")}} style={add}> <h1 style={{fontSize: 60,marginLeft: '24%', marginTop: '-16%'}}>+</h1> </div>
+            <div onClick={() => { history.push("/cadastro/piada")}} style={add}> <h1 style={{fontSize: 60,marginLeft: '24%', marginTop: '-16%'}}>+</h1> </div>
                 <div style={{ height: 80 }}></div>
                 {feed.map(post => {
+                    
+                    const date = post.date.split("T")
+                    let background = "#C4C4C4"
+                    let edit = ""
+                    if(post.user_id.id === id){
+                        background = "#CCFF99"
+                        UIStore.update(s => {s.postId = post.id})
+                        edit = <Link to={`/edit/piada`}> Editar </Link>
+                    }
                     return (
-                        <Post user={post.user_id.name} key={post.id} joke={post.joke} />
+                        <Post user={post.user_id.name} edit={edit} key={post.id} joke={post.joke} background={background} date={date[0]} />
                         )
                     })}
             </div>

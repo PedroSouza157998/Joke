@@ -5,22 +5,20 @@ import Login from "../pages/Login"
 import Register from "../pages/Register";
 import NewPost from "../pages/NewPost";
 import User from "../pages/UserPage";
-import MyContext from "../context/MyContext";
+import EditPost from "../pages/EditPost";
 
 function Routes() {
-    const [userId, setUserId] = React.useState()
 
     return (
 
         <BrowserRouter>
             <Switch>
-                <MyContext.Provider value={{userId, setUserId}}>
                     <Route exact path="/" component={App} />
                     <Route path="/login" component={Login} />
                     <Route exact path="/cadastro" component={Register} />
                     <Route path="/cadastro/piada" component={NewPost} />
                     <Route path="/user" component={User} />
-                </MyContext.Provider>
+                    <Route path="/edit/piada" component={EditPost}/>
             </Switch>
         </BrowserRouter>
     );

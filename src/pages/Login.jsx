@@ -1,47 +1,44 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { Alert, AlertIcon} from "@chakra-ui/react"
+import { Link, useHistory } from "react-router-dom";
+import { Alert, AlertIcon } from "@chakra-ui/react";
+import { UIStore } from "../UIstate/UIstate";
 
 import ChakraInput from "../components/input";
 import ChakraButton from "../components/button";
 import api from "../services/api";
-import MyContext from "../context/MyContext";
 
-import "../styles/pages/Login.css"
+import "../styles/pages/Login.css";
 
 export default function App() {
+    const history = useHistory();
     const [login, setLogin] = React.useState('')
     const [user, setUser] = React.useState({})
     const [password, setPassword] = React.useState('')
     const [display, setDisplay] = React.useState('none')
     const [mensageError, setMensageError] = React.useState('')
 
-    const{ userId, setUserId } = React.useContext(MyContext)
-    setUserId(2)
-    console.log(userId);
-
     async function handleSubmit(event) {
         event.preventDefault();
 
         if (login && password) {
             await api.post('login', { login, password }).then((res) => {
-                setUser(res.data[0])
+                if (res.data[0]) {
+                    setUser(res.data[0])
+                    UIStore.update(s => { s.userId = res.data[0].id })
+                    UIStore.update(s => { s.userName = res.data[0].name })
+                    history.push("/")
+                } else {
+                    setDisplay("flex")
+                    setMensageError("usuário ou senha incorretos campos !!!")
+                }
             })
-            if (user) {                
-                window.location.assign("http://localhost:3000")
-            }
-            else {
-                setDisplay("flex")
-                setMensageError("Usuário ou senha incorretos !!!")
-            }
+            // if (user) history.push("/")
 
         } else {
             setDisplay("flex")
             setMensageError("Preencha todos os campos !!!")
         }
     }
-
-
     return (
         <main>
             <form onSubmit={handleSubmit} className="card-main">

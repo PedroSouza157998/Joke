@@ -1,14 +1,17 @@
 import React from "react";
 import Post from "../components/post";
 import api from "../services/api";
-import { Link } from "react-router-dom";
-import MyContext from "../context/MyContext";
+import { UIStore } from "../UIstate/UIstate";
+import { Link, useHistory } from "react-router-dom";
 import "../styles/pages/App.css";
 
 export default function App() {
-
-    const{ userId } = React.useContext(MyContext)
+    const history = useHistory();
     const [feed, setFeed] = React.useState([]);
+    const userName = UIStore.useState(s => s.userName)
+    const userId = UIStore.useState(s => s.userId)
+
+    if (userId === 0) history.push("/login")
     
     const header = {
         position: 'fixed',
@@ -27,26 +30,32 @@ export default function App() {
             });
         }
         fetchData();
-        console.log(userId);
+        
 
     }, [])
-    const userName = 'Rodrigo'
 
     return (
 
         <main>
 
             <header style={header}>
-                <div className="user" onClick={() => { window.location.assign("http://localhost:3000/user") }}><p style={{ cursor: "pointer", marginLeft: 20, marginTop: 5 }} >{userName[0]}</p></div>
+                <div className="user" onClick={() => { history.push("/user") }}><p style={{ cursor: "pointer", marginLeft: 20, marginTop: 5 }} >{userName[0]}</p></div>
                 <Link to="/login" style={{ color: '#D41925', fontSize: 20, marginRight: 30, marginTop: 20 }}>sair &rarr;</Link>
             </header>
 
 
-            <div>
+            <div style={{flexDirection: "column-reverse"}}>
                 <div style={{ height: 80 }}></div>
                 {feed.map(post => {
+                    const date = post.date.split("T")
+                    let background = "#C4C4C4"
+                    let edit = ""
+                    if(post.user_id.id === userId){
+                        background = "#CCFF99"
+                        edit = <Link to={`/edit/piada/${post.id}`}> Editar </Link>
+                    }
                     return (
-                        <Post user={post.user_id.name} key={post.id} joke={post.joke} />
+                        <Post key background={background} edit={edit} user={post.user_id.name} joke={post.joke} date={date[0]} />
                     )
                 })}
             </div>
