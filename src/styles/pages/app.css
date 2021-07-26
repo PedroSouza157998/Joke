@@ -1,0 +1,9 @@
+.user{
+    margin-left: 20px;
+    margin-top: 10px;
+    width:60px;
+    height:60px;
+    border-radius:60px;
+    background-color:gray;
+    font-size: 30px;
+}
