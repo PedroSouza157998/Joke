@@ -33,6 +33,7 @@ export default function EditPost() {
     const userId = UIStore.useState(s => s.userId)
     if (userId === 0) history.push("/login")
 
+    
     async function updateJoke() {
         if (joke === undefined || joke === ' ' || joke === '  ') {
             setDisplay("flex")
@@ -67,7 +68,9 @@ export default function EditPost() {
                     placeholder="Texto: (Máximo de 300 caracteres)"
                     style={text}
                     height={200} width='90%' />
+
                 <ChakraButton onClick={() => { updateJoke() }} text="Atualizar" />
+
                 <div onClick={() => { deleteJoke() }} style={deleteButton}>Apagar postagem</div>
             </div>
             <div id="alert" style={{ marginTop: 50, display: display }}>

@@ -27,6 +27,11 @@ export default function User() {
             }
         })
     }
+    async function fetchData() {
+        await api.get(`public/${id}`).then((res) => {
+            setFeed(res.data)
+        })
+    }
 
     const header = {
         position: 'fixed',
@@ -36,7 +41,7 @@ export default function User() {
         justifyContent: 'space-between',
         backgroundColor: '#42C2E9',
     }
-    const add = {
+    const buttonFromAdd = {
         position: 'absolute',
         marginLeft: '90vw',
         marginTop: '85vh',
@@ -47,11 +52,6 @@ export default function User() {
         cursor: 'pointer'
     }
     React.useEffect(() => {
-        async function fetchData() {
-            await api.get(`public/${id}`).then((res) => {
-                setFeed(res.data)
-            })
-        }
         fetchData();
         if (feed.length === 0) {
             setMensage("flex")
@@ -72,13 +72,15 @@ export default function User() {
 
             <div style={{ width: '100vw', height: '100vh'}}>
 
-                <div onClick={() => { history.push("/cadastro/piada") }} style={add}> <h1 style={{ fontSize: 60, marginLeft: '24%', marginTop: '-16%' }}>+</h1> </div>
+                <div onClick={() => { history.push("/cadastro/piada") }} style={buttonFromAdd}> <h1 style={{ fontSize: 60, marginLeft: '24%', marginTop: '-16%' }}>+</h1> </div>
                 <div style={{ height: 80 }}></div>
                 {feed.map(post => {
                     const date = post.date.split("T")
                     let background = "#C4C4C4"
                     let edit = ""
                     let del = ""
+                    
+                    //if id that the user typed is valid
                     if (post.user_id.id === id) {
                         background = "#CCFF99"
                         UIStore.update(s => { s.postId = post.id })

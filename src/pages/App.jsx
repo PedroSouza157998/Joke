@@ -17,7 +17,6 @@ export default function App() {
     if (userId === 0) {
         display = 'none'
         headerAlign = 'flex-end'
-        
     }
 
     function getJokeValue(joke) {
@@ -29,14 +28,14 @@ export default function App() {
             data: {
                 id: id
             }
-        }).then((res) => {
-            if (res.data.success) {
-                return;
-            }
-
-
-            //mostra uma mensagem de erro aaaaaaaaaaaaa
         })
+    }
+    async function fetchData() {
+        //the api return 2 arrays, the first with the posts from user, and the other with the posts from rest users
+        await api.post('feed', { id: userId }).then((res) => {
+            let realFeed = [...res.data[0], ...res.data[1] ]
+            setFeed(realFeed)
+        });
     }
 
     const add = {
@@ -60,17 +59,10 @@ export default function App() {
         backgroundColor: '#42C2E9',
 
     }
+    
 
     React.useEffect(() => {
-        async function fetchData() {
-            await api.post('feed', { id: userId }).then((res) => {
-                let realFeed = [...res.data[0], ...res.data[1] ]
-                setFeed(realFeed)
-            });
-        }
         fetchData();
-        
-
     }, [feed])
 
     return (
@@ -89,16 +81,16 @@ export default function App() {
                 <div onClick={() => { history.push("/cadastro/piada")}} style={add}> <h1 style={{fontSize: 60,marginLeft: '24%', marginTop: '-16%'}}>+</h1> </div>
                 {feed.map(post => {
                     let background = "#C4C4C4"
-                    let edit = ""
-                    let del = ""
+                    let buttonEdit = ""
+                    let buttonDelete = ""
                     if(post.user_id.id === userId){
                         background = "#CCFF99"
                         
-                        edit = <Link onClick={() => {getJokeValue(post.joke)}} to={`/edit/piada/${post.id}`}> Editar </Link>
-                        del = <Link onClick={() => {deleteJoke(post.id)}} style={{color: 'red'}}> Apagar </Link>
+                        buttonEdit = <Link onClick={() => {getJokeValue(post.joke)}} to={`/edit/piada/${post.id}`}> Editar </Link>
+                        buttonDelete = <Link onClick={() => {deleteJoke(post.id)}} style={{color: 'red'}}> Apagar </Link>
                     }
                     return (
-                        <Post key background={background} edit={edit} delete={del} user={post.user_id.name} joke={post.joke} date={post.date.split("T")[0]} />
+                        <Post key background={background} edit={buttonEdit} delete={buttonDelete} user={post.user_id.name} joke={post.joke} date={post.date.split("T")[0]} />
                     )
                 })}
             </div>

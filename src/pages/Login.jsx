@@ -30,8 +30,6 @@ export default function App() {
                     setMensageError("Usuário ou senha incorretos !!!")
                 }
             })
-            // if (user) history.push("/")
-
         } else {
             setDisplay("flex")
             setMensageError("Preencha todos os campos !!!")
