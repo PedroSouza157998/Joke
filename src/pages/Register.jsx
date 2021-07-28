@@ -3,30 +3,36 @@ import "../styles/pages/Register.css";
 import ChakraInput from "../components/input";
 import ChakraButton from "../components/button";
 import api from "../services/api";
-import {
-    Alert,
-    AlertIcon
-} from "@chakra-ui/react"
+import { useHistory } from "react-router-dom";
+import { Alert, AlertIcon } from "@chakra-ui/react";
+import { UIStore } from "../UIstate/UIstate";
 
 export default function Register() {
+    const history = useHistory()
     const [user, setUser] = React.useState('')
     const [login, setLogin] = React.useState('')
     const [password, setPassword] = React.useState('')
     const [display, setDisplay] = React.useState('none')
     const [mensageError, setMensageError] = React.useState('')
 
+    async function registerUser() {
+        await api.post('register', { name: user, login, password }).then((res) => {
+            UIStore.update(s => { s.userId = res.data.id })
+            UIStore.update(s => { s.userName = res.data.name })
+            history.push("/")
+        })
+    }
+    
     async function handleSubmit(event) {
         event.preventDefault();
         if (user !== '' && login !== '' && password !== '') {
             await api.post("/checkRegister", { login }).then((res) => {
-                setDisplay("flex")
-                setMensageError("Login já existe !!!")
-                return;
+                if (res.data.length > 0) {
+                    setDisplay("flex")
+                    setMensageError("Login já existe !!!")
+                } else registerUser()
             })
 
-            await api.post('register', { name: user, login, password })
-            console.log({ user, login, password })
-            window.location.assign("http://localhost:3000")
 
         } else {
             setDisplay("flex")

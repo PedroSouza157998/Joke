@@ -11,11 +11,29 @@ export default function User() {
     const id = UIStore.useState(s => s.userId)
     const history = useHistory();
 
+    if(id === 0) window.location.assign("http://localhost:3000/login")
+
     const [feed, setFeed] = React.useState([]);
 
-    api.get(`public/${id}`).then((res) => {
-        setFeed(res.data)
-    })
+    function getJokeValue(joke) {
+        UIStore.update(s => {s.joke = joke })
+    }
+
+    async function deleteJoke(id) {
+        await api.delete('/deleteJoke', {
+            data: {
+                id: id
+            }
+        }).then((res) => {
+            if (res.data.success) {
+
+                return;
+            }
+
+
+            //mostra uma mensagem de erro aaaaaaaaaaaaa
+        })
+    }
 
     const header = {
         position: 'fixed',
@@ -35,6 +53,14 @@ export default function User() {
         height: 80,
         cursor: 'pointer'
     }
+    React.useEffect(() => {
+        async function fetchData() {
+            await api.get(`public/${id}`).then((res) => {
+                setFeed(res.data)
+            })
+        }
+        fetchData();
+    }, [feed])
 
     return (
 
@@ -43,7 +69,7 @@ export default function User() {
 
             <header style={header}>
                 <Link to="/" style={{ fontSize: 19, marginLeft: 30, marginTop: 20 }} >&larr; Página principal</Link>
-                <Link to="/login" style={{ color: '#D41925', fontSize: 20, marginRight: 30, marginTop: 20 }}>sair &rarr;</Link>
+                <Link to="/login" style={{ color: 'black', fontSize: 20, marginRight: 30, marginTop: 20 }}>sair &rarr;</Link>
             </header>
 
 
@@ -55,13 +81,15 @@ export default function User() {
                     const date = post.date.split("T")
                     let background = "#C4C4C4"
                     let edit = ""
+                    let del = ""
                     if(post.user_id.id === id){
                         background = "#CCFF99"
                         UIStore.update(s => {s.postId = post.id})
-                        edit = <Link to={`/edit/piada`}> Editar </Link>
+                        edit = <Link onClick={() => {getJokeValue(post.joke)}} to={`/edit/piada/${post.id}`}> Editar </Link>
+                        del = <Link onClick={() => {deleteJoke(post.id)}} style={{color: 'red'}}> Apagar </Link>
                     }
                     return (
-                        <Post user={post.user_id.name} edit={edit} key={post.id} joke={post.joke} background={background} date={date[0]} />
+                        <Post user={post.user_id.name} edit={edit} delete={del} key={post.id} joke={post.joke} background={background} date={date[0]} />
                         )
                     })}
             </div>
