@@ -10,13 +10,14 @@ import "../styles/pages/App.css";
 export default function User() {
     const id = UIStore.useState(s => s.userId)
     const history = useHistory();
+    const [mensage, setMensage] = React.useState('none')
 
-    if(id === 0) window.location.assign("http://localhost:3000/login")
+    if (id === 0) window.location.assign("http://localhost:3000/login")
 
     const [feed, setFeed] = React.useState([]);
 
     function getJokeValue(joke) {
-        UIStore.update(s => {s.joke = joke })
+        UIStore.update(s => { s.joke = joke })
     }
 
     async function deleteJoke(id) {
@@ -24,14 +25,6 @@ export default function User() {
             data: {
                 id: id
             }
-        }).then((res) => {
-            if (res.data.success) {
-
-                return;
-            }
-
-
-            //mostra uma mensagem de erro aaaaaaaaaaaaa
         })
     }
 
@@ -60,6 +53,10 @@ export default function User() {
             })
         }
         fetchData();
+        if (feed.length === 0) {
+            setMensage("flex")
+        }
+        else setMensage("none");
     }, [feed])
 
     return (
@@ -73,26 +70,30 @@ export default function User() {
             </header>
 
 
-            <div>
-            <div onClick={() => { history.push("/cadastro/piada")}} style={add}> <h1 style={{fontSize: 60,marginLeft: '24%', marginTop: '-16%'}}>+</h1> </div>
+            <div style={{ width: '100vw', height: '100vh'}}>
+
+                <div onClick={() => { history.push("/cadastro/piada") }} style={add}> <h1 style={{ fontSize: 60, marginLeft: '24%', marginTop: '-16%' }}>+</h1> </div>
                 <div style={{ height: 80 }}></div>
                 {feed.map(post => {
-                    
                     const date = post.date.split("T")
                     let background = "#C4C4C4"
                     let edit = ""
                     let del = ""
-                    if(post.user_id.id === id){
+                    if (post.user_id.id === id) {
                         background = "#CCFF99"
-                        UIStore.update(s => {s.postId = post.id})
-                        edit = <Link onClick={() => {getJokeValue(post.joke)}} to={`/edit/piada/${post.id}`}> Editar </Link>
-                        del = <Link onClick={() => {deleteJoke(post.id)}} style={{color: 'red'}}> Apagar </Link>
+                        UIStore.update(s => { s.postId = post.id })
+                        edit = <Link onClick={() => { getJokeValue(post.joke) }} to={`/edit/piada/${post.id}`}> Editar </Link>
+                        del = <Link onClick={() => { deleteJoke(post.id) }} style={{ color: 'red' }}> Apagar </Link>
                     }
                     return (
                         <Post user={post.user_id.name} edit={edit} delete={del} key={post.id} joke={post.joke} background={background} date={date[0]} />
-                        )
-                    })}
+                    )
+                })}
+                <p style={{ display: mensage, marginLeft: '42%', marginTop:100 }}>Não há publicações suas</p>
+
+
             </div>
+
 
 
         </main>
