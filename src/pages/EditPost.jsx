@@ -33,7 +33,7 @@ export default function EditPost() {
     const userId = UIStore.useState(s => s.userId)
     if (userId === 0) history.push("/login")
 
-    
+
     async function updateJoke() {
         if (joke === undefined || joke === ' ' || joke === '  ') {
             setDisplay("flex")
@@ -54,9 +54,6 @@ export default function EditPost() {
             if (res.data.success) {
                 history.push("/");
             }
-
-
-            //mostra uma mensagem de erro aaaaaaaaaaaaa
         })
     }
 

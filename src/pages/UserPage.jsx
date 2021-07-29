@@ -54,7 +54,7 @@ export default function User() {
     React.useEffect(() => {
         fetchData();
         if (feed.length === 0) {
-            setMensage("flex")
+            setMensage("flex");
         }
         else setMensage("none");
     }, [feed])
@@ -70,7 +70,7 @@ export default function User() {
             </header>
 
 
-            <div style={{ width: '100vw', height: '100vh'}}>
+            <div style={{ width: '100vw', height: '100vh' }}>
 
                 <div onClick={() => { history.push("/cadastro/piada") }} style={buttonFromAdd}> <h1 style={{ fontSize: 60, marginLeft: '24%', marginTop: '-16%' }}>+</h1> </div>
                 <div style={{ height: 80 }}></div>
@@ -79,19 +79,21 @@ export default function User() {
                     let background = "#C4C4C4"
                     let edit = ""
                     let del = ""
-                    
+
                     //if id that the user typed is valid
                     if (post.user_id.id === id) {
                         background = "#CCFF99"
                         UIStore.update(s => { s.postId = post.id })
                         edit = <Link onClick={() => { getJokeValue(post.joke) }} to={`/edit/piada/${post.id}`}> Editar </Link>
-                        del = <Link onClick={() => { deleteJoke(post.id) }} style={{ color: 'red' }}> Apagar </Link>
+                        del = <p onClick={() => { deleteJoke(post.id) }} style={{ color: 'red' }}> Apagar </p>
                     }
                     return (
-                        <Post user={post.user_id.name} edit={edit} delete={del} key={post.id} joke={post.joke} background={background} date={date[0]} />
+                        <div key={post.id}>
+                            <Post user={post.user_id.name} edit={edit} delete={del} joke={post.joke} background={background} date={date[0]} />
+                        </div>
                     )
                 })}
-                <p style={{ display: mensage, marginLeft: '42%', marginTop:100 }}>Não há publicações suas</p>
+                <p style={{ display: mensage, marginLeft: '42%', marginTop: 100 }}>Não há publicações suas</p>
 
 
             </div>

@@ -87,10 +87,12 @@ export default function App() {
                         background = "#CCFF99"
                         
                         buttonEdit = <Link onClick={() => {getJokeValue(post.joke)}} to={`/edit/piada/${post.id}`}> Editar </Link>
-                        buttonDelete = <Link onClick={() => {deleteJoke(post.id)}} style={{color: 'red'}}> Apagar </Link>
+                        buttonDelete = <p onClick={() => {deleteJoke(post.id)}} style={{color: 'red', cursor: 'pointer'}}> Apagar </p>
                     }
                     return (
+                        <div key={post.id}>
                         <Post key background={background} edit={buttonEdit} delete={buttonDelete} user={post.user_id.name} joke={post.joke} date={post.date.split("T")[0]} />
+                        </div>
                     )
                 })}
             </div>
